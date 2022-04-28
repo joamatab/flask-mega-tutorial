@@ -110,8 +110,7 @@ def reset_password_request():
 
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
+        if user := User.query.filter_by(email=form.email.data).first():
             send_password_reset_email(user)
         flash('Check your email for the instructions to reset your password')
         return redirect(url_for('login'))
@@ -177,7 +176,7 @@ def follow(username):
     user = User.query.filter_by(username=username).first()
 
     if user is None:
-        flash('User {} not found.'.format(username))
+        flash(f'User {username} not found.')
         return redirect(url_for('index'))
 
     if user == current_user:
@@ -197,7 +196,7 @@ def unfollow(username):
     user = User.query.filter_by(username=username).first()
 
     if user is None:
-        flash('User {} not found.'.format(username))
+        flash(f'User {username} not found.')
         return redirect(url_for('index'))
 
     if user == current_user:
